@@ -7,7 +7,7 @@
 - 코드가 계산(Evaluation)  되어 값을 만든그 것
 
 ~~~typescript
-  const number = 1 // 평가
+const number = 1 // 평가
 const sum2 = 1 + 2
 const sum3 = (1 + 3) + 4
 ~~~
@@ -20,7 +20,7 @@ const sum3 = (1 + 3) + 4
 - 함수의 결과로 사용될 수 있다.
 
 ~~~typescript
-  const a = 10;
+const a = 10;
 const add10 = a => a + 10;
 const r = add10(a); // 결과를 사용할수있
 console.log(r);
