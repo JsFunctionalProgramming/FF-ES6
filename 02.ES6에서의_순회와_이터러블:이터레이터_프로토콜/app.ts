@@ -1,5 +1,3 @@
-const log = (...data: any[]) => console.log(...data);
-
 log('Arr --------')
 const arr = [1, 2, 3];
 const iter1 = arr[Symbol.iterator]();
