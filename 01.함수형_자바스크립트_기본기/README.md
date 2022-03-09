@@ -48,7 +48,7 @@ log(f2())  // 1
 ~~~
 
 ### 고차 함수
- - 함수르 갑승로 다루는 함수
+ - 함수를 값으로 다루는 함수
  - 함수를 인자로 받아서 실행하는 함수(apply, times)
  - [Applicative Programming](#https://aeunhi99.tistory.com/66)
 
@@ -75,3 +75,4 @@ log(f2())  // 1
   log('add10:',add10(10))
 ~~~
               
+## Advance
