@@ -22,12 +22,12 @@ for (const number of set) {
  *  Map
  * */
 log('Map --------')
-const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
-for (const a of map.keys()) console.log('keys:', a)
-for (const a of map.values()) console.log('value:', a)
-for (const a of map.entries()) log('entries',a)
-let it = map.values();
-let it2 = it[Symbol.iterator]();
+const mapA = new Map([['a', 1], ['b', 2], ['c', 3]]);
+for (const a of mapA.keys()) console.log('keys:', a)
+for (const a of mapA.values()) console.log('value:', a)
+for (const a of mapA.entries()) log('entries',a)
+let itD = mapA.values();
+let it2 = itD[Symbol.iterator]();
 console.log(
   it2.next()
 )
@@ -106,4 +106,4 @@ for (const a of customIterator) log(a)
 /** 전개 연산자 */
 const a = [1,2];
 // a[Symbol.iterator] = null
-log(...a, ...[3,4], ...arr, ...set, ...map.values());
+log(...a, ...[3,4], ...arr, ...set, ...mapA.values());

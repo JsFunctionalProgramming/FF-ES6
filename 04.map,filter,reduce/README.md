@@ -119,3 +119,58 @@ for (const product of products) {
     }())
   )
 ~~~
+   
+## reduce
+~~~typescript
+const nums = [1,2,3,4,5];
+  let total = 0;
+  for (const n of nums){
+    total = total + n
+  }
+
+  console.log(total);
+
+  const reduce = (f: (acc: any , a: any) => any, acc: any, iter: any) => {
+    if (!iter){ // 초기 값이 없을경우
+      iter = acc[Symbol.iterator]();
+      acc = iter.next().values
+    }
+
+    for (const a of iter) {
+      acc = f(acc, a)
+    }
+    return acc
+  };
+
+  const add = (a: number,b: number) => a+ b;
+  console.log(reduce(add, 5, [1,2,3,4,5]))
+  console.log(reduce(add, 0, [1,2,3,4,5]))
+  console.log(add(add(add(0,1), 2),3))  // 재귀적으로 실행하는거
+  console.log(
+    'totalPrice',
+    reduce(
+      (totalPrice: number, product: Product) => totalPrice + product.price,
+        0,
+        products
+    )
+  )
+~~~
+
+## map+filter,reducer 중첩 사용과 함수형 사고
+~~~typescript
+console.log(
+  reduce(
+    sum,
+    0,
+    map<Product>(p => p.price,
+      filter(p => p.price < 20000, products))   // 내가 어떤 초기값을 넣어줘야할지고민한다
+  )
+)
+console.log(
+  reduce(
+    sum,
+    0,
+    [10, 20, 30, 40] // 숫자들이 들어갈 걸 평가한다
+  )
+)
+~~~

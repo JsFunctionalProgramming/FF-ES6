@@ -1,10 +1,10 @@
-{
-  type Product = {
+
+  export type Product = {
     name: string,
     price: number
   }
 
-  const products: Product[] = [
+  export const products: Product[] = [
     {name: '반팔티', price: 15000},
     {name: '긴팔티', price: 20000},
     {name: '핸드폰케이스', price: 15000},
@@ -13,7 +13,7 @@
   ]
 
 // map, 수집은 f 인자가 한다,
-  const map = <T>(f: (a: T) => {}, iter: Generator<number, void, unknown> | any[] | Map<any, any>) => {
+  export const map = <T>(f: (a: T) => {}, iter: Generator<number, void, unknown> | any[] | Map<any, any>) => {
     let res = [];
     for (const a of iter) {
       res.push(f(a)) // 함수를 실행시켜준다
@@ -69,4 +69,3 @@
     maps
   )
 
-}
