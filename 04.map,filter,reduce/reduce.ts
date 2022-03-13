@@ -8,7 +8,7 @@ for (const n of nums) {
 
 console.log(total);
 
-export const reduce = (f: (acc: any, a: any) => any, acc: any, iter: any) => {
+const reduce = (f: (acc: any, a: any) => any, acc: any, iter: any) => {
   if (!iter) { // 초기 값이 없을경우
     iter = acc[Symbol.iterator]();
     acc = iter.next().values

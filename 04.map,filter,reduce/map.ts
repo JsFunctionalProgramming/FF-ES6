@@ -12,8 +12,8 @@
     {name: '바지', price: 25000},
   ]
 
-// map, 수집은 f 인자가 한다,
-  export const map = <T>(f: (a: T) => {}, iter: Generator<number, void, unknown> | any[] | Map<any, any>) => {
+  // map, 수집은 f 인자가 한다,
+  const map = <T>(f: (a: T) => {}, iter: Generator<number, void, unknown> | any[] | Map<any, any>) => {
     let res = [];
     for (const a of iter) {
       res.push(f(a)) // 함수를 실행시켜준다
