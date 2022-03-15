@@ -1,9 +1,9 @@
 const products = [
-	{name: '반팔티', price: 15000, quantity: 1},
-	{name: '긴팔티', price: 20000, quantity: 2},
-	{name: '핸드폰케이스', price: 15000, quantity: 3},
-	{name: '후드티', price: 30000, quantity: 4},
-	{name: '바지', price: 25000, quantity: 5},
+	{name: '반팔티', price: 15000, quantity: 1, is_selected: false},
+	{name: '긴팔티', price: 20000, quantity: 2, is_selected: false},
+	{name: '핸드폰케이스', price: 15000, quantity: 3, is_selected: false},
+	{name: '후드티', price: 30000, quantity: 4, is_selected: true},
+	{name: '바지', price: 25000, quantity: 5, is_selected: true},
 ]
 
 const add = (a, b) => a + b
@@ -37,22 +37,28 @@ document.querySelector('#cart').innerHTML = `
 			<th>수량</th>
 			<th>총 가격</th>
 		</tr>
-		<tr>
-			<td>반팔티</td>
-			<td>10000</td>
-			<td><input type="number" value="3" name="" id=""></td>
-			<td>30000</td>
-		</tr>
-		<tr>
-			<td>반팔티</td>
-			<td>10000</td>
-			<td>3</td>
-			<td>30000</td>
-		</tr>
+		${
+		go(products, sum(
+			p => `
+				<tr>
+					<td>
+						<label for="p">
+							<input type="checkbox" name="p" ${p.is_selected ? 'checked' : ''}">
+						</label>
+					</td>
+					
+					<td>${p.name}</td>
+					<td><input type="number" value="${p.quantity}" name="" id=""></td>
+					<td>${p.quantity}</td>
+					<td>${p.price * p.quantity}</td>
+				</tr>
+			`),
+		) // 전체를 다 해준다
+}
 		<tr>
 			<td colspan="2">합계</td>
-			<td>6 </td>
-			<td>60000</td>
+			<td>${total_quantity(filter(p => p.is_selected, products))} </td>
+			<td>${total_price(filter(p => p.is_selected, products))}</td>
 		</tr>
 	</table>
 	
