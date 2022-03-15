@@ -9,22 +9,21 @@ const products = [
 
 const add = (a, b) => a + b
 
-const total_quantity = products =>
-	go(products,
-		map(p => p.quantity),
-		console.log
-	)
+const sum = (f, iter) => go(
+	iter,
+	map(f),
+	reduce(add)
+)
+
+const total_quantity = products => sum((p => p.quantity), products)
 
 const total_quantity2 = pipe(
 	map(p => p.quantity),
 	console.log
 )
 
-const total_price = pipe(
-	map(p => p.price * p.quantity),
-	reduce(add)
-)
+const total_price = products => sum((p => p.price * p.quantity), products)
 
 console.log(total_quantity(products))
 console.log(total_quantity2(products))
-console.log(total_price((products)))
+console.log(total_price(products))
