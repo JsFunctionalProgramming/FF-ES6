@@ -9,21 +9,32 @@ const products = [
 
 const add = (a, b) => a + b
 
-const sum = (f, iter) => go(
+const sum = curry((f, iter) => go(
 	iter,
 	map(f),
 	reduce(add)
-)
+))
 
-const total_quantity = products => sum((p => p.quantity), products)
+const total_quantity = sum((p => p.quantity))
 
 const total_quantity2 = pipe(
 	map(p => p.quantity),
 	console.log
 )
 
-const total_price = products => sum((p => p.price * p.quantity), products)
+const total_price = sum((p => p.price * p.quantity))
+const total_price2 = products => sum(p => p.price * p.quantity)(products)
+
+console.log(
+	'age sum',
+	sum(u => u.age, [
+		{ age: 30,},
+		{ age: 20,},
+		{ age: 10,},
+	])
+)
 
 console.log(total_quantity(products))
 console.log(total_quantity2(products))
 console.log(total_price(products))
+console.log(total_price2(products))
