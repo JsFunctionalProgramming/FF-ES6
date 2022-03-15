@@ -1,4 +1,3 @@
-
 const products = [
 	{name: '반팔티', price: 15000, quantity: 1},
 	{name: '긴팔티', price: 20000, quantity: 2},
@@ -25,16 +24,36 @@ const total_quantity2 = pipe(
 const total_price = sum((p => p.price * p.quantity))
 const total_price2 = products => sum(p => p.price * p.quantity)(products)
 
-console.log(
-	'age sum',
-	sum(u => u.age, [
-		{ age: 30,},
-		{ age: 20,},
-		{ age: 10,},
-	])
-)
-
 console.log(total_quantity(products))
 console.log(total_quantity2(products))
 console.log(total_price(products))
 console.log(total_price2(products))
+
+document.querySelector('#cart').innerHTML = `
+	<table>
+		<tr>
+			<th>상품 이름</th>
+			<th>가격</th>
+			<th>수량</th>
+			<th>총 가격</th>
+		</tr>
+		<tr>
+			<td>반팔티</td>
+			<td>10000</td>
+			<td><input type="number" value="3" name="" id=""></td>
+			<td>30000</td>
+		</tr>
+		<tr>
+			<td>반팔티</td>
+			<td>10000</td>
+			<td>3</td>
+			<td>30000</td>
+		</tr>
+		<tr>
+			<td colspan="2">합계</td>
+			<td>6 </td>
+			<td>60000</td>
+		</tr>
+	</table>
+	
+`
