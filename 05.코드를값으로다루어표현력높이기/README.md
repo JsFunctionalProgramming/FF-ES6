@@ -117,7 +117,7 @@ go(
  go(
    products,
    base_total_price((p: Product) => p.price >= 20000),
-   console.log
+   console.log                              
  )
 
 ~~~
