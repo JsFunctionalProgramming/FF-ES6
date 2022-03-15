@@ -76,11 +76,48 @@ go(
 
 ~~~
 
-## go+curry 를 사용하여 더 일기 좋은 코드로 만들기
+## go+curry 를 사용하여 더 읽기 좋은 코드로 만들기
+ - curry 함수를 이용해 좀 더 실행하기 쉬운 함수로, 인자없이 읽기 좋은 함수를 만들수 있다.
          
 ### curry
 ~~~typescript
  const curry = f => (a, ...rest) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
 
  const mult =  curry((a, b) => a * b);
+
+  go(
+    products,
+    filter((p: Product) => p.price  < 20000),
+    map((p: Product) => p.price),
+    reduce(add)(prices),
+    console.log
+  )
+
+~~~
+
+## 함수 조합으로 함수 만들기
+
+~~~typescript
+ const total_price = pipe(
+  map((p: Product) => p.price),
+  reduce(add)
+ ) 
+
+ const base_total_price = (predi: (p: Product) => boolean) => pipe(
+  filter(predi),
+  total_price
+ )
+
+ go(
+   products,
+   base_total_price((p: Product) => p.price < 20000),
+   console.log
+ )
+
+ go(
+   products,
+   base_total_price((p: Product) => p.price >= 20000),
+   console.log
+ )
+
 ~~~

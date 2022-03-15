@@ -1,8 +1,8 @@
-import {curry, reduce} from "../fx";
+import {curry, filter, map, products, reduce} from "../fx";
+import {Product} from "../04.map,filter,reduce/map";
 
 const go = (...args: any) => {
-
-  return reduce((a, f) => f(a), args, undefined)
+  return reduce((a: any, f: (arg0: any) => any) => f(a), args, undefined)
 }
 
 go(
@@ -36,4 +36,35 @@ console.log(
 )
 console.log(
   mult2(4, 2)
+)
+const add = (a: number,b: number) => a+b
+
+go(
+  products,
+  (products: Product[]) => filter((p: Product) => p.price  < 20000)(products),
+  (products: Product[]) => map((p: Product) => p.price)(products),
+  (prices: number[]) => reduce(add)(prices),
+  console.log
+)
+
+const total_price = pipe(
+  map((p: Product) => p.price),
+  reduce(add)
+)
+
+const base_total_price = (predi: (p: Product) => boolean) => pipe(
+  filter(predi),
+  total_price
+)
+
+go(
+  products,
+  base_total_price((p: Product) => p.price < 20000),
+  console.log
+)
+
+go(
+  products,
+  base_total_price((p: Product) => p.price >= 20000),
+  console.log
 )
