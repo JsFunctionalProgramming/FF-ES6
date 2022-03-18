@@ -31,4 +31,16 @@ export const filter = curry((f: (a: any) => boolean, iter: Generator<any, void, 
 })
 
 
+export const L: { range: (l: any) => Generator<number, void, undefined> } = {
+  range: function* (l: any){
+    log('hi~')
+
+    let i = -1;
+
+    while (++i < l) {
+      log(i, 'L.range')
+      yield i;
+    }
+  }
+}
 export const log = (...data: any[]) => console.log(...data);
