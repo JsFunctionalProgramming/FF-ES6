@@ -5,6 +5,7 @@ export const curry = (f: (arg0: any, arg1: any) => any) => (a: any, ...rest: any
 export const reduce = curry((f: (acc: any, a: any) => any, acc: any, iter: any) => {
   if (!iter) { // 초기 값이 없을경우
     iter = acc[Symbol.iterator]();
+    // console.log(iter)
     acc = iter.next().value
   }
   for (const a of iter) {
@@ -28,3 +29,6 @@ export const filter = curry((f: (a: any) => boolean, iter: Generator<any, void, 
   }
   return res
 })
+
+
+export const log = (...data: any[]) => console.log(...data);

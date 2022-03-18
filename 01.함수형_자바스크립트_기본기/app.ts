@@ -1,4 +1,4 @@
-const log = (...data: any[]) => console.log(...data);
+import {log} from "../fx";
 
 
 const add5 = (a: number) => a + 5;

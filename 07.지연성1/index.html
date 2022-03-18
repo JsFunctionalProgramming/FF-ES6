@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+src:
+<script src="fx.js"></script>
+<script>
+
+
+	const range = (l) => {
+		let res = [];
+		let i = -1;
+
+		while (++i < l) {
+			res.push(i);
+		}
+		return res;
+	}
+
+	function test(name, time, f) {
+		console.log(f)
+		console.time(name);
+		while (time--) f();
+		console.timeEnd(name)
+	}
+
+	const L = {
+		range: function* (l) {
+			let i = -1;
+			while (++i < l) {
+				yield i;
+			}
+		}
+	}
+	const add = (a, b) => a + b
+
+	test('range', 10, () => reduce(add, range(1000000)))
+	test('L.range', 10, () => reduce(add, L.range(1000000)))
+	// test('range', 10, L.range(100000))
+</script>
+</html>
