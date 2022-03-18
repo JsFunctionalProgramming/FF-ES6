@@ -5,3 +5,4 @@
  - [ES6에서의 순회와 이터러블:이터레이터 프로토콜](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/02.ES6%EC%97%90%EC%84%9C%EC%9D%98_%EC%88%9C%ED%9A%8C%EC%99%80_%EC%9D%B4%ED%84%B0%EB%9F%AC%EB%B8%94:%EC%9D%B4%ED%84%B0%EB%A0%88%EC%9D%B4%ED%84%B0_%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C/README.md)
  - [03.제너레이터와_이터레이터](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/03.제너레이터와_이터레이터/README.md)
  - [04.map,filter,reduce](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/04.map,filter,reduce/README.md)
+ - [05.코드를값으로다루어표현력높이기](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/05.코드를값으로다루어표현력높이기/README.md)

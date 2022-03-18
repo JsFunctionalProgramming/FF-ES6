@@ -81,7 +81,9 @@ go(
          
 ### curry
 ~~~typescript
- const curry = f => (a, ...rest) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
+ const curry = f => (a, ...rest) => rest.length ? 
+  f(a, ...rest) :
+  (...rest) => f(a, ...rest)
 
  const mult =  curry((a, b) => a * b);
 

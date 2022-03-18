@@ -1,5 +1,5 @@
-import {curry, filter, map, products, reduce} from "../fx";
-import {Product} from "../04.map,filter,reduce/map";
+import {curry, filter, map, reduce} from "../fx";
+import {Product, products} from "../data";
 
 const go = (...args: any) => {
   return reduce((a: any, f: (arg0: any) => any) => f(a), args, undefined)

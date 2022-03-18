@@ -1,18 +1,8 @@
 
-  export type Product = {
-    name: string,
-    price: number
-  }
-
-  export const products: Product[] = [
-    {name: '반팔티', price: 15000},
-    {name: '긴팔티', price: 20000},
-    {name: '핸드폰케이스', price: 15000},
-    {name: '후드티', price: 30000},
-    {name: '바지', price: 25000},
-  ]
 
   // map, 수집은 f 인자가 한다,
+  import {Product, products} from "../data";
+
   const map = <T>(f: (a: T) => {}, iter: Generator<number, void, unknown> | any[] | Map<any, any>) => {
     let res = [];
     for (const a of iter) {

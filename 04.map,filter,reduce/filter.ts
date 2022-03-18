@@ -1,5 +1,4 @@
-// filter
-import {products} from "./map";
+import {products} from "../data";
 
 let under20000 = [];
 for (const p of products) {

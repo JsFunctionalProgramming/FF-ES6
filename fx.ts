@@ -1,16 +1,3 @@
-type Product = {
-  name: string,
-  price: number
-}
-
-export const products: Product[] = [
-  {name: '반팔티', price: 15000},
-  {name: '긴팔티', price: 20000},
-  {name: '핸드폰케이스', price: 15000},
-  {name: '후드티', price: 30000},
-  {name: '바지', price: 25000},
-]
-
 // @ts-ignore
 export const curry = (f: (arg0: any, arg1: any) => any) => (a: any, ...rest: any[]) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
 
@@ -41,4 +28,3 @@ export const filter = curry((f: (a: any) => boolean, iter: Generator<any, void, 
   }
   return res
 })
-
