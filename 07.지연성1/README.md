@@ -117,3 +117,67 @@ log(list.next())
 
 
 ~~~
+
+## range, map, filter, take, reduce 중첩함수
+     
+ - 순서를 확인해보자
+~~~javascript
+
+ go(
+  range(10),
+  map((n: number) => n +10),
+  filter((n: number) => n % 2 === 1),
+  take(4),
+  log
+ )
+
+ go(
+	 L.range(10),
+	 L.map((n: number) => n +10),
+	 L.filter((n: number) => n % 2 === 1),
+	 take(4),
+	 log
+ )
+~~~
+
+- for of 를 while 문으로 변경할수 있다
+
+~~~javascript
+const map = (f, iter) {
+	let res = [];
+	
+	for (let a of iter){
+		res.push(f(a))
+    }
+	
+	return res
+}
+
+
+ const map = (f, iter) {
+  let res = [];
+  iter = iter[Symbol.iterator]()
+  
+  let cur;
+  while (!(cur = iter.next()).done){
+	let a = cur.value;
+	res.push(f(a))
+  }
+	
+  return res
+}
+~~~
+ - lazy 함수를 실행시 take 함수에서 값이 아래에서 위로 가져가면서 평가 실행된다
+
+## map, filter 계열 함수들이 가지는 결합 법칙
+ - 사용하는 데이터가 무엇이든지
+ - 사용하는 보조 함수가 순수 함수라면 무엇이든지
+ - 아래와 같이 결합한다면 둘 다 결과가 값다
+ 
+ 1) [[mapping, mapping], [filtering, filtering], [mapping, mapping]]
+ 2) [[mapping, filtering, mapping], [mapping, filtering, mapping], [mapping, filtering, mapping]]
+
+## ES6 이후...
+ - 기존 라이브러리에 의존한 
+ - 자바스크립트가 자체적인 기능으로 
+ - 평가와 지연 평가 약속된 규약으로 안전하게 할 수 있게 좋아졌다.

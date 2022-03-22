@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script src="lib.fx.js"></script>
+<script>
+
+	console.time('none')
+
+	go(
+		range(10),
+		map((n) => n + 10),
+		filter((n) => n % 2 === 1),
+		take(4),
+		log
+	)
+	console.timeEnd('none')
+
+	console.time('L')
+	go(
+		L.range(10),
+		L.map((n) => n + 10),
+		L.filter((n) => n % 2 === 1),
+		take(2),
+		log
+	)
+	console.timeEnd('L')
+
+</script>
+</body>
+</html>
