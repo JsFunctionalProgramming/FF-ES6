@@ -67,12 +67,18 @@ L.filter = curry(function *(f, iter ){
 	}
 })
 
+L.entries = function* (obj) {
+	for (const objKey in obj) yield [objKey, obj[objKey]]
+}
+
 const go = (...args) => reduce((a, f) => f(a), args, undefined)
 const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
 
 const take = curry((l, iter) => {
 	let res = [];
+	// console.log(iter)
 	iter = iter[Symbol.iterator]();
+	// console.log(iter)
 	let cur;
 	while (!(cur = iter.next()).done){
 		const a = cur.value;

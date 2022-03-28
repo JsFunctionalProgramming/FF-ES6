@@ -20,12 +20,40 @@
 
 	const queryStr = pipe(
 		Object.entries,
-		map(([k, v]) => `${k}=${v}`),
+		L.map(([k, v]) => `${k}=${v}`),
+		function (a) {
+			console.log(a);
+			return a;
+		},
 		reduce((a, b) => `${a}&${b}`)
 	)
 
 
 	log(queryStr({limit: 10, offset: 10, type: 'notice'}))
+
+	const join = curry((sep = ',', iter) => reduce((a, b) => `${a}${sep}${b}`, iter))
+
+	function* a() {
+		yield 10
+		yield 11
+		yield 12
+		yield 13
+	}
+	
+	console.log(join('-', a()))
+
+    L.entries = function* (obj) {
+		for (const objKey in obj) yield [objKey, obj[objKey]]
+	}
+
+	const queryStr2 = pipe(
+		L.entries,
+		L.map(([k, v]) => `${k}=${v}`),
+		join(',')
+	)
+
+	console.log(queryStr2({limit: 10, offset: 10, type: 'notice'}))
+
 
 </script>
 </body>

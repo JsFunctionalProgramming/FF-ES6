@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script src="lib.fx.js"></script>
+<script>
+	const users = [
+		{age: 32},
+		{age: 31},
+		{age: 37},
+		{age: 28},
+		{age: 25},
+		{age: 32},
+		{age: 31},
+		{age: 37}
+	]
+
+	// 파인드는 하나의 값만꺼내줘야한다
+	const _find = (f, iter) => go(
+		iter,
+		filter(a => (log(a), f(a))), // 다 실행되버리는게 아쉽다
+		a => (log(a), a),
+		take(1),
+		([a]) => a
+	)
+
+	const lFind = (f, iter) => go(
+		iter,
+		L.filter(a => (log(a), f(a))),
+		take(1),
+		([a]) => a
+	)
+
+	const find = curry(
+		(f, iter) => go(
+			iter,
+			L.filter(f),
+			take(1),
+			([a]) => a
+		)
+	)
+
+	log(
+		'result', find(a => a.age < 37)(users)
+	)
+
+
+    go(users,
+      map(a => a.age),
+      find(a => a < 30),
+      log
+    )
+
+
+</script>
+</body>
+</html>
