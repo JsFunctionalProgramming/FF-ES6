@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script src="lib.fx.js"></script>
+<script>
+	const goQueryStr = obj => go(
+		obj,
+		Object.entries,
+		map(([k, v]) => `${k}=${v}`),
+		reduce((a, b) => `${a}&${b}`)
+	)
+
+	const queryStr = pipe(
+		Object.entries,
+		map(([k, v]) => `${k}=${v}`),
+		reduce((a, b) => `${a}&${b}`)
+	)
+
+
+	log(queryStr({limit: 10, offset: 10, type: 'notice'}))
+
+</script>
+</body>
+</html>

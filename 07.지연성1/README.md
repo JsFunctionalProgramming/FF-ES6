@@ -29,7 +29,7 @@ log(reduce(add, range(4))) //6
  - 평가시점을 제어한다, 
  - 평가가 되지않고 기다린다. 
  - reduce 가 평가시점을 실행시킨다.
- - 리듀스 를 가도 이터레이터반환시 자기자신을 반환시킨다.
+ - 리듀스 를 가도 이터레이터 반환시 자기자신을 반환시킨다.
 ~~~typescript
 
 const L: { range: (l: any) => Generator<number, void, undefined> } = {

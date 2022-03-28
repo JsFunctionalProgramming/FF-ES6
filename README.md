@@ -7,3 +7,4 @@
  - [04.map,filter,reduce](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/04.map,filter,reduce/README.md)
  - [05.코드를값으로다루어표현력높이기](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/05.코드를값으로다루어표현력높이기/README.md)
  - [07.지연성1](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/07.지연성1/README.md)
+ - [08.지연성2](https://github.com/JsFunctionalProgramming/FF-ES6/blob/master/08.지연성2/README.md)
