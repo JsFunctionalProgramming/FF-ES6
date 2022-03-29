@@ -48,12 +48,12 @@ const queryStr2 = pipe(
 - find 는 테이크로 만들수잇다
 
 ~~~javascript
-   const _find = (f, iter) => go(
-	iter,
-	filter(a => (log(a), f(a))), // 다 실행되버리는게 아쉽다
-	a => (log(a), a),
-	take(1),
-	([a]) => a
+ const find = (f, iter) => go(
+  iter,
+  filter(a => (log(a), f(a))), // 다 실행되버리는게 아쉽다
+  a => (log(a), a),
+  take(1),
+  ([a]) => a
 )
 
 const lFind = (f, iter) => go(
@@ -74,4 +74,86 @@ const find = curry(
 )
 
 log('result', find(a => a.age < 37)(users))
+~~~
+
+## map, filter 만들기(l.map, l.filter)
+
+~~~javascript
+
+// 1.go 함수를 이용해서 만들고 iter 를 집적넣어준다
+const map1 = curry((f, iter) => go(
+	iter,
+	L.map(f),
+	take(Infinity)
+))
+
+// 2. curry 가 해결(iter)
+const map2 = curry((f, iter) => go(
+	L.map(f),
+	take(Infinity)
+))
+
+// 3.go => pipe 로 대체시 f 및 iter를 호출시 넣으면 알아서 낭낭하게 해준다
+const map3 = curry(pipe(
+	L.map,
+	take(Infinity)
+))
+
+
+// 4.takeAll 함수를 만들어서 대체해준다
+const takeAll = take(Infinity)
+
+const map = curry(pipe(L.map, takeAll))
+const filter = curry(pipe(L.filter, takeAll))
+
+~~~
+
+## L.flatten 함수 구현
+
+- 평평하게 배열을 이터러블을 반환해주는거
+
+~~~javascript
+    // 이터러블 케이스를 찾아서 반환
+const isIterable = a => a && a[Symbol.iterator];
+
+L.flatten = function* (iter) {
+  for (const a of iter) {
+    // 순환후 아직 이터러블일 경우 다시한번 a 를 순환해서 b yield를 반환하다, 이중배열이 여러개여도 천천히 나오게된다. 하나씩
+     if (isIterable(a)) for (const b of a) yield b
+     else yield a
+   }
+}
+
+let it = L.flatten(arr1); // 이터러블 상태를 만든다
+
+log(it.next()) // 필요할때 호출할수 잇다.
+log(it.next())
+
+
+log(take(3, L.flatten(arr1)))  // 적당히 가져올수잇다 take활용 
+
+const flatten = pipe(L.flatten, takeAll) // 전체를 가져올수잇다
+
+
+log(flatten(arr1))
+
+~~~
+             
+ - Advance flatten, deepFlat
+~~~javascript
+
+L.flatten2 = function* (iter) {
+  for (const a of iter) {
+    if (isIterable(a)) yield* a;  // for of 를 대체한다 * a 제너레이터로 반환 대체한다
+    else yield a;
+  }
+
+}
+L.deepFlat = function* f(iter) {
+  for (const a of iter) {
+    if (isIterable(a)) yield* f(a); // 부모의 f를 호출 재귀함수
+    else yield a;
+  }
+
+}
 ~~~

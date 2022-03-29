@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script src="lib.fx.js"></script>
+<script>
+	// log([...[1, 2], 3, 4, ...[5, 6], ...[7, 8, 9]])
+
+	const isIterable = a => a && a[Symbol.iterator];
+
+	L.flatten = function* (iter) {
+		for (const a of iter) {
+			// log(a)
+			if (isIterable(a)) for (const b of a) yield b
+			else yield a
+		}
+	}
+	const arr1 = [[1, 2], 3, 4, [5, 6], [7, 8, 9]]
+
+	let it = L.flatten(arr1);
+
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	// log(it.next())
+	log(take(3, L.flatten(arr1)))  // 적당히 가져올수잇다
+
+	const flatten = pipe(L.flatten, takeAll)
+	log(flatten(arr1))
+
+	L.flatten2 = function* (iter) {
+		for (const a of iter) {
+			if (isIterable(a)) yield* a;
+			else yield a;
+		}
+
+	}
+	L.deepFlat = function* f(iter) {
+		for (const a of iter) {
+			if (isIterable(a)) yield* f(a); // 재귀함수
+			else yield a;
+		}
+
+	}
+
+</script>
+</body>
+</html>

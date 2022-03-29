@@ -99,3 +99,6 @@ const range = (l) => {
 	}
 	return res;
 }
+
+const takeAll = take(Infinity)
+
