@@ -49,11 +49,11 @@ const queryStr2 = pipe(
 
 ~~~javascript
  const find = (f, iter) => go(
-  iter,
-  filter(a => (log(a), f(a))), // 다 실행되버리는게 아쉽다
-  a => (log(a), a),
-  take(1),
-  ([a]) => a
+	iter,
+	filter(a => (log(a), f(a))), // 다 실행되버리는게 아쉽다
+	a => (log(a), a),
+	take(1),
+	([a]) => a
 )
 
 const lFind = (f, iter) => go(
@@ -117,11 +117,11 @@ const filter = curry(pipe(L.filter, takeAll))
 const isIterable = a => a && a[Symbol.iterator];
 
 L.flatten = function* (iter) {
-  for (const a of iter) {
-    // 순환후 아직 이터러블일 경우 다시한번 a 를 순환해서 b yield를 반환하다, 이중배열이 여러개여도 천천히 나오게된다. 하나씩
-     if (isIterable(a)) for (const b of a) yield b
-     else yield a
-   }
+	for (const a of iter) {
+		// 순환후 아직 이터러블일 경우 다시한번 a 를 순환해서 b yield를 반환하다, 이중배열이 여러개여도 천천히 나오게된다. 하나씩
+		if (isIterable(a)) for (const b of a) yield b
+		else yield a
+	}
 }
 
 let it = L.flatten(arr1); // 이터러블 상태를 만든다
@@ -138,22 +138,67 @@ const flatten = pipe(L.flatten, takeAll) // 전체를 가져올수잇다
 log(flatten(arr1))
 
 ~~~
-             
- - Advance flatten, deepFlat
+
+- Advance flatten, deepFlat
+
 ~~~javascript
 
 L.flatten2 = function* (iter) {
-  for (const a of iter) {
-    if (isIterable(a)) yield* a;  // for of 를 대체한다 * a 제너레이터로 반환 대체한다
-    else yield a;
-  }
+	for (const a of iter) {
+		if (isIterable(a)) yield* a;  // for of 를 대체한다 * a 제너레이터로 반환 대체한다
+		else yield a;
+	}
 
 }
 L.deepFlat = function* f(iter) {
-  for (const a of iter) {
-    if (isIterable(a)) yield* f(a); // 부모의 f를 호출 재귀함수
-    else yield a;
-  }
+	for (const a of iter) {
+		if (isIterable(a)) yield* f(a); // 부모의 f를 호출 재귀함수
+		else yield a;
+	}
 
 }
+~~~
+
+## 이터러블 중심 프로그래밍 실무적인 코드
+
+~~~javascript
+   const users = [
+	{
+		name: 'a', age: 21, family: [
+			{name: 'a1', age: 53}, {name: 'a2', age: 47},
+			{name: 'a3', age: 16}, {name: 'a4', age: 15},
+		]
+	},
+	{
+		name: 'b', age: 24, family: [
+			{name: 'b1', age: 58}, {name: 'b2', age: 51},
+			{name: 'b3', age: 19}, {name: 'b4', age: 22},
+		]
+	},
+	{
+		name: 'c', age: 31, family: [
+			{name: 'c1', age: 53}, {name: 'c2', age: 62}
+		]
+	},
+	{
+		name: 'd', age: 21, family: [
+			{name: 'd1', age: 42}, {name: 'd2', age: 42},
+			{name: 'd3', age: 11}, {name: 'd4', age: 7},
+		]
+	},
+]
+
+const sumMinUser = go(
+	users,
+	L.map(u => u.family),
+	L.flatten,     // 합치고
+	L.filter(a => a.age < 20), // 안에서 성인이하를 뽑는다
+	L.map(a => a.age), // 원하는 데이터 출력
+	take(4), // 이제 원하는 숫자값만 뽑음
+	// takeAll,	      
+	reduce((a, b) => a + b)
+	// log
+)
+
+console.log(sumMinUser)
 ~~~

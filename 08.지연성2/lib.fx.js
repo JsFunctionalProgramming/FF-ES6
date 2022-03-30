@@ -71,7 +71,7 @@ L.entries = function* (obj) {
 	for (const objKey in obj) yield [objKey, obj[objKey]]
 }
 
-const go = (...args) => reduce((a, f) => f(a), args, undefined)
+const go = (...args) => reduce((a, f) => f(a), args)
 const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
 
 const take = curry((l, iter) => {
@@ -102,3 +102,13 @@ const range = (l) => {
 
 const takeAll = take(Infinity)
 
+const isIterable = a => a && a[Symbol.iterator];
+L.flatten = function* (iter) {
+	for (const a of iter) {
+		// log(a)
+		if (isIterable(a)) for (const b of a) yield b
+		else yield a
+	}
+}
+
+const flatten = pipe(L.flatten, takeAll)
