@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Composition</title>
+</head>
+<body>
+
+<script src="lib.fx.js"></script>
+<script>
+	const g = a => a + 1;
+	const f = a => a * a;
+	log(f(g(1))) // 정상 동작
+	log(f(g())) // Nan 오류 생김
+
+    // 박스 연산에 필요한 재료들을 보관한다
+    log([1].map(g).map(f))
+
+    var b  = [1].map(g).map(f).forEach(v => log(v))
+    var c  = [].map(g).map(f).forEach(v => log(v)) // 부수효과가 존재하지 않음
+    var v = [1,2,3].map(g).filter(f => f % 2).forEach(r => log(r))
+    // 박스의 값이 항상 빈값이기에 따라서 안전하게 된다.
+
+    Array.of(1).map(g).map(f).forEach(r => log(r))
+    // 비동기에서 일어나는 상황을 안전하게 하는 상황임
+    Promise.resolve(1).then(g).then(f).then(r => log(r))
+    // 대기가 일어나는 상황도 안전하게 만들수 있다
+    new Promise(resolve => setTimeout(() => resolve(2), 1100)).then(g).then(f).then(r => log(r))
+</script>
+<script type="module">
+    // Kleisli Composition
+    // f . g
+    // f(g(x)) = f(g(x)) // 양 함수순서에 상관없이 같을때다.
+    // f(g(x)) = g(x) f가 안되도 g(x) 가 되는걸 원한다!
+
+    const users = [
+	    { id: 1, name: 'aa' },
+	    { id: 2, name: 'bb' },
+	    { id: 3, name: 'cc' }
+    ]
+    const getUserById = id => find((u) => u.id === id, users) || Promise.reject('없어요 !');
+    const f = ({name}) => name;
+
+	const g = getUserById;
+	const fg = id => f(g(id));
+
+	const r = fg(2);
+	users.pop(); // 상황에따라 에러가 나는 상황 연출
+	users.pop();
+    // const r2 = fg(2)  // 에러 유저갸 존재하지 않다, f {} 네임이라는 객체를 꺼내야한다. 무조건,!
+
+    // 해결 방법  // f 의 관계를 피할수 있다
+    const fg2 = id => Promise.resolve(id).then(g).then(f).catch(a => a); // 더이상 안되는 상황을 피할수 있따
+	fg2(2).then(log)
+</script>
+</body>
+</html>

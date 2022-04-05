@@ -112,3 +112,11 @@ L.flatten = function* (iter) {
 }
 
 const flatten = pipe(L.flatten, takeAll)
+const find = curry(
+	(f, iter) => go(
+		iter,
+		L.filter(f),
+		take(1),
+		([a]) => a
+	)
+)
