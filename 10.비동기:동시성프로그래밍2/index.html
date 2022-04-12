@@ -35,44 +35,54 @@
 
 <!--</script>-->
 
+<!--<script>-->
+<!--	// go(-->
+<!--	// 	[1, 2, 3, 4, 5, 6],-->
+<!--	// 	L.map(a => Promise.resolve(a * a)),-->
+<!--	// 	L.filter(a => {-->
+<!--	// 		console.log(a) // 앞에 filter 를 고쳐서 then 값이 true 일떄 처리해준다-->
+<!--	// 		return a % 2 === 1-->
+<!--	// 	}),-->
+<!--	// 	take(2),-->
+<!--	// 	log-->
+<!--	// )-->
+
+<!--	go([1, 2, 3, 4, 5, 6],-->
+<!--		L.map(a => Promise.resolve(a * a)), // promise 가 아닌게 와도 계속 nop 을 활용해서 이어나갈수 잇다-->
+<!--		// L.map(a => a * a),-->
+<!--        L.filter(a => {-->
+<!--			// log(a);-->
+<!--			return Promise.resolve(a % 2);-->
+<!--		}),-->
+<!--		L.map(a => {-->
+<!--			// log(a);-->
+<!--			return a * a;-->
+<!--		}),-->
+<!--      take(4),-->
+<!--      log-->
+<!--	)-->
+
+<!--    /**-->
+<!--     *  중간에 에러 리젝할 경우 그 이후는 무시하게 된다.-->
+<!--     *  * */-->
+<!--	Promise.resolve(1)-->
+<!--	.then(() => Promise.reject('err'))-->
+<!--	.then(_ => console.log('here'))-->
+<!--	.then(_ => console.log('here2'))-->
+<!--	.then(_ => console.log('here3'))-->
+<!--	.catch(e => console.log(e, '결국은 어차피 끝이 중간에 map 들은 무시할꺼야'))-->
+<!--</script>-->
+
 <script>
-	// go(
-	// 	[1, 2, 3, 4, 5, 6],
-	// 	L.map(a => Promise.resolve(a * a)),
-	// 	L.filter(a => {
-	// 		console.log(a) // 앞에 filter 를 고쳐서 then 값이 true 일떄 처리해준다
-	// 		return a % 2 === 1
-	// 	}),
-	// 	take(2),
-	// 	log
-	// )
-
-	go([1, 2, 3, 4, 5, 6],
-		L.map(a => Promise.resolve(a * a)), // promise 가 아닌게 와도 계속 nop 을 활용해서 이어나갈수 잇다
-		// L.map(a => a * a),
-        L.filter(a => {
-			// log(a);
-			return Promise.resolve(a % 2);
-		}),
-		L.map(a => {
-			// log(a);
-			return a * a;
-		}),
-      take(4),
-      log
+	// reduce 에서 nop 지원
+	go(
+		[1, 2, 3, 4, 5],
+		L.map(a => Promise.resolve(a * a)),
+		L.filter(a => Promise.resolve(a % 2)),
+        reduce(add),
+        log
 	)
-
-    /**
-     *  중간에 에러 리젝할 경우 그 이후는 무시하게 된다.
-     *  * */
-	Promise.resolve(1)
-	.then(() => Promise.reject('err'))
-	.then(_ => console.log('here'))
-	.then(_ => console.log('here2'))
-	.then(_ => console.log('here3'))
-	.catch(e => console.log(e, '결국은 어차피 끝이 중간에 map 들은 무시할꺼야'))
 </script>
-
 
 </body>
 </html>

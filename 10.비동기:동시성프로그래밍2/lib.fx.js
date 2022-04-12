@@ -1,5 +1,16 @@
 const curry = (f) => (a, ...rest) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
 const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
+const nop = Symbol('nop')
+
+const reduceF = (acc, a, f) =>
+	a instanceof Promise ?
+		a.then(a =>
+			f(acc,a),
+			e => e == nop ? acc : Promise.reject(e)
+		) // 2번째 인자는 reject
+	: f(acc, a)
+
+const add = (a, b) => a + b;
 
 const reduce = curry((f, acc, iter) => {
 	if (!iter) { // 초기 값이 없을경우
@@ -11,10 +22,8 @@ const reduce = curry((f, acc, iter) => {
 	return go1(acc,function recur(acc) {
 		let cur;
 		while (!(cur = iter.next()).done) {
-			const a = cur.value;
-			// console.log(a)
-			acc = f(acc, a);
-			if (acc instanceof Promise) return acc.then(recur)
+			acc = reduceF(acc, cur.value, f);
+			if(acc instanceof Promise) return acc.then(recur)
 		}
 		return acc
 	});
@@ -58,8 +67,6 @@ L.map = curry(function* (f, iter) {
 		yield go1(a, f);
 	}
 })
-
-const nop = Symbol('nop')
 
 L.filter = curry(function* (f, iter) {
 	
