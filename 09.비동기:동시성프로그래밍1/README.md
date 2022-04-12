@@ -131,5 +131,6 @@ new Promise(resolve => setTimeout(() => resolve(2), 1100)).then(g).then(f).then(
 
     // 해결 방법  // f 의 관계를 피할수 있다                           
     const fg2 = id => Promise.resolve(id).then(g).then(f).catch(a => a); // 더이상 안되는 상황을 피할수 있따
-	fg2(2).then(log)
+	g(2) // == Promise<reject>
+    fg2(2).then(log)
 ~~~

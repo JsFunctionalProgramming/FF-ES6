@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="lib.fx.js"></script>
+<script>
+
+	go(
+		Promise.resolve(1),
+		a => a + 10,
+		a => Promise.resolve(2),
+		// a => Promise.reject('error ~'),
+		// a => console.log('----'),
+		a => a + 1000,
+		a => a + 10000,
+		log
+	)
+
+</script>
+<script>
+    Promise.resolve(Promise.resolve(Promise.resolve(1))).then(log);
+    new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log)
+
+</script>
+</body>
+</html>

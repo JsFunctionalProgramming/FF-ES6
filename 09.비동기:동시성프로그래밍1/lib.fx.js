@@ -1,19 +1,23 @@
-const curry = (f) => (a, ...rest ) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
+const curry = (f) => (a, ...rest) => rest.length ? f(a, ...rest) : (...rest) => f(a, ...rest)
+const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
 const reduce = curry((f, acc, iter) => {
 	if (!iter) { // 초기 값이 없을경우
 		iter = acc[Symbol.iterator]();
-		// console.log(iter)
 		acc = iter.next().value
-	} else{
+	} else {
 		iter = acc[Symbol.iterator]();
 	}
-	let cur;
-	while (!(cur = iter.next()).done){
-		const a = cur.value;
-		acc = f(acc, a)
-	}
-	return acc
+	return go1(acc,function recur(acc) {
+		let cur;
+		while (!(cur = iter.next()).done) {
+			const a = cur.value;
+			// console.log(a)
+			acc = f(acc, a);
+			if (acc instanceof Promise) return acc.then(recur)
+		}
+		return acc
+	});
 });
 
 const map = curry((f, iter) => {
@@ -21,7 +25,7 @@ const map = curry((f, iter) => {
 	iter = iter[Symbol.iterator]();
 	let cur;
 	
-	while (!(cur = iter.next()).done){
+	while (!(cur = iter.next()).done) {
 		const a = cur.value;
 		res.push(f(a));
 	}
@@ -33,7 +37,7 @@ const filter = curry((f, iter) => {
 	let res = [];
 	iter = iter[Symbol.iterator]();
 	let cur
-	while (!(cur = iter.next()).done){
+	while (!(cur = iter.next()).done) {
 		const a = cur.value;
 		if (f(a)) res.push(a);
 	}
@@ -42,9 +46,8 @@ const filter = curry((f, iter) => {
 })
 
 
-let L = {
-}
-L.range =  function* (l) {
+let L = {}
+L.range = function* (l) {
 	let i = -1;
 	while (++i < l) {
 		yield i;
@@ -53,15 +56,15 @@ L.range =  function* (l) {
 L.map = curry(function* (f, iter) {
 	iter = iter[Symbol.iterator]();
 	let cur;
-	while (!(cur = iter.next()).done){
+	while (!(cur = iter.next()).done) {
 		const a = cur.value;
 		yield f(a);
 	}
 })
-L.filter = curry(function *(f, iter ){
+L.filter = curry(function* (f, iter) {
 	iter = iter[Symbol.iterator]();
 	let cur;
-	while (!(cur = iter.next()).done){
+	while (!(cur = iter.next()).done) {
 		const a = cur.value;
 		if (f(a)) yield a
 	}
@@ -70,7 +73,6 @@ L.filter = curry(function *(f, iter ){
 L.entries = function* (obj) {
 	for (const objKey in obj) yield [objKey, obj[objKey]]
 }
-
 const go = (...args) => reduce((a, f) => f(a), args)
 const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
 
@@ -80,7 +82,7 @@ const take = curry((l, iter) => {
 	iter = iter[Symbol.iterator]();
 	// console.log(iter)
 	let cur;
-	while (!(cur = iter.next()).done){
+	while (!(cur = iter.next()).done) {
 		const a = cur.value;
 		res.push(a);
 		if (res.length == l) return res;
@@ -88,7 +90,7 @@ const take = curry((l, iter) => {
 	return res
 })
 
-const log = (...data) => console.log(...data);
+const log = console.log;
 
 const range = (l) => {
 	let res = [];
