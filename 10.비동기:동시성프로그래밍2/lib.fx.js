@@ -2,26 +2,53 @@ const curry = (f) => (a, ...rest) => rest.length ? f(a, ...rest) : (...rest) => 
 const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 const nop = Symbol('nop')
 
-const reduceF = (acc, a, f) =>
-	a instanceof Promise ?
+const reduceF = (acc, a, f) => {
+	console.log(
+		a instanceof Promise,
+	)
+	return a instanceof Promise ?
 		a.then(a =>
 			f(acc,a),
-			e => e == nop ? acc : Promise.reject(e)
-		) // 2번째 인자는 reject
+			e => e == nop ? acc : Promise.reject(e)  // 2번째 인자는 reject
+		)
 	: f(acc, a)
+}
 
 const add = (a, b) => a + b;
 
+// take 1은 배열 줘서 첫번째커처리
+const head = iter => go1(take(1, iter), ([h]) => {
+	log(h)
+	
+	return h
+})
+
 const reduce = curry((f, acc, iter) => {
 	if (!iter) { // 초기 값이 없을경우
-		iter = acc[Symbol.iterator]();
-		acc = iter.next().value
-	} else {
-		iter = acc[Symbol.iterator]();
+		// iter = acc[Symbol.iterator]();
+		
+		console.log('recur')
+		iter = acc[Symbol.iterator]()
+		// console.log()
+		console.log(iter,Symbol.iterator)
+		
+		return reduce( 
+			f,
+			head(iter),
+			iter
+		);
+		// 이터레이터를 만들고 결과를 꺼내고 yield 를 만든다.
+		// 이렇게 코드를 문장 작성하지 않고 코드로만 하는거는
+		// 어플리케이션은 추상화 되어잇지 않지만, 회사 내부에서는 비동기 상황이 나올수 있으니 정리하자
 	}
+	
+	iter = acc[Symbol.iterator]();
+	console.log(f)
+	
 	return go1(acc,function recur(acc) {
 		let cur;
 		while (!(cur = iter.next()).done) {
+			
 			acc = reduceF(acc, cur.value, f);
 			if(acc instanceof Promise) return acc.then(recur)
 		}

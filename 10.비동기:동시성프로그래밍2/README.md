@@ -47,3 +47,8 @@ L.map = curry(function *(f, iter){
       log  
     ),
 ~~~
+
+## 병렬적 평가하기
+- 싱글 스레드 기반 제어: 비동기 기반으로 돌아가고 있다.(CPU 효율화)
+- 동시에 출발(동시성) => 하나로 귀결: 자바스크립트도 병렬처리가 필요한다
+- EX) nodejs -> db query 병렬 후 한번에 얻어오기, redis nosql key를 통해동시, image 처리.., nodejs 직접 하지 않고 받는 시점만 다룰때

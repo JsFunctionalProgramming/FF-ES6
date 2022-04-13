@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="lib.fx.js"></script>
+
+<script>
+	let C = {};
+
+	function noop() {
+	}
+
+	const catchNoop = arr => (arr.forEach((a => a instanceof Promise ? a.catch(noop) : a)), arr);
+
+	C.reduce = curry((f, acc, iter) => {
+		const iter2 = catchNoop(iter ? [...iter] : [...acc]); // 먼저 평가
+
+		// iter2.forEach(a => a.catch(function (){})); // call stack 에러 탈출
+
+		return iter ? reduce(f, acc, iter2) : reduce(f, iter2)
+	})
+	C.take = curry((l, iter) => {
+		return take(l, catchNoop([...iter]));
+	})
+
+	C.takeAll = C.take(Infinity);
+
+	C.map = curry(pipe(L.map, C.takeAll))
+
+	C.filter = curry(pipe(L.filter, C.takeAll))
+
+	const delay1000 = a => new Promise(resolve => {
+		console.log('hi~');
+		setTimeout(() => resolve(a), 1000)
+	})
+</script>
+
+<script>
+	/**
+	 *   그냥 이터레이터를 전달하면 reduce 에서 next 로 순회하면서 하나씩 프로미스가 출발되고, 나중에 돌아온 값을 역시 reduce 가 합산하는 것이고,
+	 *
+	 *   전개 연산자로 평가된 프로미스들을 배열에 담으면 프로미스들은 이미 출발이 된 상태고, reduce 는 돌아온 값들을 합산만 해주면 되는 것이죠?
+	 *   그리고 순차적으로 출발한 것이 아니라 동시에 출발한 것이기에, 모두 돌아올 때까지 걸리는 시간도 훨씬 줄어들고요
+	 *
+	 */
+	function* f() {
+		yield console.log(1);
+		yield console.log(2);
+		yield console.log(3);
+	}
+
+
+	const iter = f();
+	iter.next();
+	[...iter];
+
+	var a = Promise.reject('hi');
+	a.catch(a => a);
+
+	a.catch(a => log(a, 'c'))
+	a.catch(a => log(a, 'c'))
+	a.catch(a => log(a, 'c'))
+</script>
+
+
+<!--<script>-->
+
+<!--    console.time('');-->
+<!--    // go([1,2,3,4,5],-->
+<!--    //   L.map(a => delay1000(a * a)),-->
+<!--    //   L.filter(a => delay1000(a % 2)),-->
+<!--    //   L.map(a => delay1000(a % a)),-->
+<!--    //   C.reduce(add), //-->
+<!--    //   // reduce(add), // 순서대로 넘어가고 있다-->
+<!--    //   log,-->
+<!--    //   _ => console.timeEnd('')-->
+<!--    // )-->
+<!--    -->
+
+<!--</script>-->
+
+<script>
+	C.map(a => delay1000(a * a), [1, 2, 3, 4,]).then(log)
+	C.filter(a => delay1000(a * 2), [1, 2, 3, 4]).then(log)
+</script>
+
+</body>
+</html>
